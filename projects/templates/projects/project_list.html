@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h1 class="text-4xl font-bold mb-10 text-center text-blue-500">
+    Engineering Projects
+</h1>
+
+<div class="grid md:grid-cols-3 gap-8">
+    {% for project in projects %}
+    <div class="bg-gray-900 rounded-2xl shadow-xl overflow-hidden hover:-translate-y-2 transition duration-300">
+
+        {% if project.image %}
+        <img src="{{ project.image.url }}" class="w-full h-52 object-cover">
+        {% endif %}
+
+        <div class="p-6 space-y-3">
+            <h2 class="text-2xl font-semibold text-white">
+                {{ project.title }}
+            </h2>
+
+            <div class="text-gray-400 text-sm space-y-1">
+                <p><span class="text-gray-300 font-medium">Location:</span> {{ project.location }}</p>
+                <p><span class="text-gray-300 font-medium">Role:</span> {{ project.role }}</p>
+                <p><span class="text-gray-300 font-medium">Duration:</span> {{ project.duration }}</p>
+
+                {% if project.category %}
+                <p><span class="text-gray-300 font-medium">Project Type:</span> {{ project.category.name }}</p>
+                {% endif %}
+            </div>
+
+            <a href="{% url 'project_detail' project.id %}" 
+               class="inline-block mt-4 text-blue-400 font-medium hover:text-blue-300">
+                View Full Project →
+            </a>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
