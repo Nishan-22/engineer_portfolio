@@ -1,10 +1,21 @@
 from django.contrib import admin
-from .models import Profile, Skill, Project, Education, Certificate
+from .models import Profile, Skill, Experience, Education, Certificate
 
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'title', 'email', 'phone')
+    fieldsets = (
+        (None, {
+            'fields': ('full_name', 'title', 'photo', 'about', 'location')
+        }),
+        ('Contact Information', {
+            'fields': ('email', 'phone')
+        }),
+        ('Social Media', {
+            'fields': ('linkedin', 'github', 'twitter')
+        }),
+    )
 
 
 @admin.register(Skill)
@@ -13,9 +24,10 @@ class SkillAdmin(admin.ModelAdmin):
     list_filter = ('category',)
 
 
-@admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'tools_used')
+@admin.register(Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ('job_title', 'company', 'start_date', 'end_date')
+    search_fields = ('job_title', 'company', 'description')
 
 
 @admin.register(Education)
@@ -25,4 +37,4 @@ class EducationAdmin(admin.ModelAdmin):
 
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
-    list_display = ('title', 'organization', 'year')
+    list_display = ('title', 'organization', 'issue_date')
