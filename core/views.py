@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django_ratelimit.decorators import ratelimit
 from .models import Profile, Skill, Experience, Education, Certificate
 from .forms import ContactForm
 from projects.models import Project
@@ -9,6 +10,23 @@ from projects.models import Project
 
 def home(request):
     profile = Profile.objects.first()
+
+    context = {
+        'profile': profile,
+        'skills': Skill.objects.all(),
+        'experiences': Experience.objects.all(),
+        'projects': Project.objects.all(),
+        'education': Education.objects.all(),
+        'certificates': Certificate.objects.all(),
+    }
+
+    return render(request, 'core/home.html', context)
+
+
+@ratelimit(key='ip', rate='5/h', method='POST')
+def contact(request):
+    profile = Profile.objects.first()
+    
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -31,18 +49,13 @@ def home(request):
             except Exception as e:
                 messages.error(request, "There was an error sending your message. Please try again later.")
             
-            return redirect('home')
+            return redirect('contact')
     else:
         form = ContactForm()
 
     context = {
         'profile': profile,
-        'skills': Skill.objects.all(),
-        'experiences': Experience.objects.all(),
-        'projects': Project.objects.all(),
-        'education': Education.objects.all(),
-        'certificates': Certificate.objects.all(),
         'form': form,
     }
 
-    return render(request, 'core/home.html', context)
+    return render(request, 'core/contact.html', context)

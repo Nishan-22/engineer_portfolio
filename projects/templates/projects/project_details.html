@@ -1,55 +1,104 @@
 {% extends "core/base.html" %}
 {% block content %}
 
-<div class="max-w-6xl mx-auto">
-    <div class="flex items-center gap-6 mb-12">
-        <div class="h-20 w-1 bg-orange-500"></div>
-        <div>
-            <span class="mono text-xs text-orange-500 uppercase tracking-widest">Report_ID: {{ project.id|stringformat:"04d" }}</span>
-            <h1 class="text-5xl font-black text-white uppercase italic tracking-tighter">{{ project.title }}</h1>
+<div class="max-w-5xl mx-auto">
+    <nav class="mono text-[10px] text-slate-500 uppercase tracking-widest mb-8">
+        <a href="/" class="hover:text-orange-500">Root</a> / 
+        <a href="{% url 'project_list' %}" class="hover:text-orange-500">Projects</a> / 
+        <span class="text-slate-300">{{ project.title|truncatechars:20 }}</span>
+    </nav>
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-white/10 pb-12">
+        <div class="max-w-2xl">
+            <span class="mono text-xs text-orange-500 uppercase tracking-[0.3em] block mb-2">// Technical_Report_{{ project.id|stringformat:"03d" }}</span>
+            <h1 class="text-5xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-none">
+                {{ project.title }}
+            </h1>
+        </div>
+        <div class="text-right">
+            <p class="mono text-[10px] text-slate-500 uppercase">Issue_Date</p>
+            <p class="text-sm font-bold text-white">{{ project.date|date:"M Y"|default:"FEB 2026" }}</p>
         </div>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-12">
-        <div class="lg:col-span-2 space-y-12">
-            <div class="relative border border-slate-800 bg-slate-900/50 p-3">
-                <div class="absolute inset-x-0 top-1/2 h-px bg-white/5 pointer-events-none"></div>
-                <div class="absolute inset-y-0 left-1/2 w-px bg-white/5 pointer-events-none"></div>
-                
-                <img src="{{ project.image.url }}" class="w-full grayscale hover:grayscale-0 transition-all duration-1000">
+    <div class="grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8 space-y-12">
+            <div class="blueprint-border p-2 bg-slate-900/50 group">
+                <div class="relative overflow-hidden">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out">
+                    <div class="absolute inset-0 pointer-events-none opacity-20 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
+                </div>
             </div>
 
-            <div class="prose prose-invert">
-                <h3 class="mono text-sm text-orange-500 border-b border-slate-800 pb-2 uppercase tracking-widest italic">// Project_Brief</h3>
-                <p class="text-slate-400 text-lg leading-relaxed pt-4 font-light italic">
-                    {{ project.description }}
-                </p>
+            <div class="space-y-8">
+                <div>
+                    <h3 class="mono text-xs text-orange-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-8 h-px bg-orange-500"></span> 01_Executive_Summary
+                    </h3>
+                    <div class="text-slate-300 text-lg leading-relaxed font-light first-letter:text-4xl first-letter:font-bold first-letter:text-orange-500 first-letter:mr-2 first-letter:float-left">
+                        {{ project.description|linebreaks }}
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/30 border border-white/5 rounded-sm overflow-hidden">
+                    <div class="bg-white/5 px-4 py-2 border-b border-white/10">
+                        <span class="mono text-[10px] text-white uppercase tracking-widest">Schedule_A: Engineering_Specs</span>
+                    </div>
+                    <table class="w-full text-left mono text-[11px] uppercase tracking-wider">
+                        <tr class="border-b border-white/5">
+                            <td class="p-4 text-slate-500 bg-white/[0.02] w-1/3">Structural_System</td>
+                            <td class="p-4 text-slate-200">Reinforced Concrete / Post-Tensioned Slabs</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="p-4 text-slate-500 bg-white/[0.02]">Material_Grade</td>
+                            <td class="p-4 text-slate-200">C40/50 Concrete // ASTM A615 Grade 60 Steel</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 text-slate-500 bg-white/[0.02]">Analysis_Software</td>
+                            <td class="p-4 text-slate-200">ETABS / SAFE / SAP2000</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="space-y-6">
-            <div class="bg-slate-900/80 border border-slate-800 p-8 sticky top-28">
-                <h3 class="mono text-xs text-white bg-slate-800 px-3 py-1 inline-block mb-8 uppercase tracking-widest">Metadata_ledger</h3>
-                
-                <div class="space-y-6 mono text-[11px] uppercase tracking-wider">
-                    <div class="border-b border-slate-800/50 pb-4">
-                        <span class="text-slate-500 block mb-1">Site_Coord</span>
-                        <span class="text-slate-100">{{ project.location }}</span>
-                    </div>
-                    <div class="border-b border-slate-800/50 pb-4">
-                        <span class="text-slate-500 block mb-1">Eng_Status</span>
-                        <span class="text-green-500 font-bold">100%_Operational</span>
-                    </div>
-                    <div class="border-b border-slate-800/50 pb-4">
-                        <span class="text-slate-500 block mb-1">Load_Factor</span>
-                        <span class="text-slate-100">C40 Concrete / Steel</span>
+        <div class="lg:col-span-4">
+            <div class="sticky top-28 space-y-6">
+                <div class="blueprint-border p-6 bg-slate-900/80">
+                    <h3 class="mono text-[10px] text-white bg-orange-500 px-2 py-1 inline-block mb-6 uppercase tracking-widest font-bold">Project_Metadata</h3>
+                    
+                    <div class="space-y-6 mono text-[11px] uppercase tracking-wider">
+                        <div>
+                            <span class="text-slate-500 block mb-1">Site_Coordinates</span>
+                            <span class="text-slate-100 block">{{ project.location }}</span>
+                        </div>
+                        <div class="h-px bg-white/5 w-full"></div>
+                        <div>
+                            <span class="text-slate-500 block mb-1">Current_Phase</span>
+                            <span class="text-green-500 font-bold flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                As-Built / Final
+                            </span>
+                        </div>
+                        <div class="h-px bg-white/5 w-full"></div>
+                        <div>
+                            <span class="text-slate-500 block mb-1">Scope_of_Work</span>
+                            <ul class="text-slate-300 space-y-1 mt-2">
+                                <li>• Structural Analysis</li>
+                                <li>• Foundation Design</li>
+                                <li>• Seismic Retrofitting</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+                
+                <a href="{% url 'project_list' %}" class="group flex items-center justify-between p-4 border border-white/10 mono text-[10px] text-slate-500 hover:border-orange-500 hover:text-orange-500 transition-all uppercase">
+                    <span>[ Return_to_Index ]</span>
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
             </div>
-            
-            <a href="{% url 'project_list' %}" class="flex items-center justify-center py-4 border border-slate-800 mono text-xs text-slate-500 hover:text-orange-500 transition-all uppercase">
-                [ Return_to_Main_Ledger ]
-            </a>
         </div>
     </div>
 </div>

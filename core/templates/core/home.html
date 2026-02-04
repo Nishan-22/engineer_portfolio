@@ -1,280 +1,336 @@
 {% extends "core/base.html" %}
 {% block content %}
 
-<section class="mb-32">
-    <div class="grid lg:grid-cols-5 gap-16 items-center">
-        <div class="lg:col-span-3">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="w-12 h-[2px] bg-orange-500"></span>
-                <span class="mono text-xs font-bold text-orange-500 uppercase tracking-widest">Available for hire</span>
+<section class="hero-bg min-h-screen flex items-center px-12 pt-20 border-b border-white/5">
+    <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12">
+        <div class="space-y-8">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-[2px] bg-orange-600"></div>
+                <span class="mono text-[10px] text-orange-600 font-semibold tracking-wider">Senior Structural Engineer</span>
             </div>
-            <h2 class="text-7xl font-extrabold text-white mb-6 tracking-tight leading-[0.9]">
-                Designing the <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">future</span> of infrastructure.
+            
+            <h2 class="text-5xl md:text-6xl font-bold text-white leading-tight">
+                Your Partner for <br>
+                <span class="text-white">Future Innovation</span>
             </h2>
-            <p class="text-slate-400 text-xl leading-relaxed max-w-xl font-light mb-10">
-                Hello, I'm <span class="text-white font-medium">{{ profile.full_name }}</span>. {{ profile.about }}
+            
+            <p class="text-slate-400 text-base max-w-lg leading-relaxed">
+                {{ profile.bio|default:"Specializing in the intersection of heavy infrastructure and structural precision. Delivering verified integrity for high-stress industrial environments." }}
             </p>
-            <div class="flex gap-4">
-                <a href="#projects" class="bg-white text-slate-900 px-8 py-4 font-bold rounded-sm hover:bg-slate-200 transition-all">View Projects</a>
-                <a href="#contact" class="border border-slate-700 text-white px-8 py-4 font-bold rounded-sm hover:bg-white/5 transition-all">Get in Touch</a>
+
+            <div class="flex gap-6">
+                <a href="#projects" class="btn-industrial group">
+                    View Portfolio 
+                    <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+                <a href="{% url 'contact' %}" class="px-8 py-4 border border-white/10 mono text-xs text-white hover:bg-white hover:text-black transition-all flex items-center">
+                    Get in Touch
+                </a>
             </div>
-        </div>
-        <div class="lg:col-span-2 relative">
-            <div class="aspect-square rounded-2xl overflow-hidden border border-white/10 relative z-10">
-                {% if profile.photo %}
-                <img src="{{ profile.photo.url }}" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
-                {% else %}
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center">
-                    <span class="text-slate-600">Profile Image</span>
-                </div>
-                {% endif %}
-            </div>
-            <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-orange-500/20 blur-3xl -z-10"></div>
-            <div class="absolute -top-6 -left-6 w-32 h-32 bg-blue-500/10 blur-3xl -z-10"></div>
         </div>
     </div>
 </section>
 
-<section id="experience" class="mb-32">
-    <div class="mb-16">
-        <h2 class="section-title text-4xl text-white mb-4">Professional Experience</h2>
-        <div class="h-1 w-20 bg-orange-500"></div>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for exp in experiences %}
-        <div class="glass p-8 rounded-xl border border-white/5 hover:border-orange-500/50 transition-all duration-300 cursor-pointer group" 
-             onclick="openExperienceModal(this)"
-             data-title="{{ exp.job_title }}"
-             data-company="{{ exp.company }}"
-             data-type="{{ exp.employment_type }}"
-             data-dates="{{ exp.start_date }} — {{ exp.end_date }}"
-             data-location="{{ exp.location }}"
-             data-description="{{ exp.description|default:'' }}"
-             data-projects="{{ exp.key_projects|default:'' }}"
-             data-skills="{{ exp.skills_used|default:'' }}">
-            
-            <div class="flex justify-between items-start mb-6">
-                <div class="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-500">
-                    <svg class="w-5 h-5 text-orange-500 group-hover:text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                </div>
-                <span class="mono text-[10px] text-slate-500 uppercase tracking-widest">{{ exp.start_date }}</span>
+<section id="skills" class="py-32 px-12 bg-black border-b border-white/5">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-end mb-20">
+            <div>
+                <h3 class="text-3xl font-bold text-white">Technical Specs</h3>
+                <p class="mono text-[10px] text-slate-500 mt-2">Core competencies & engineering stack</p>
             </div>
-            
-            <h3 class="text-xl font-bold text-white mb-1 group-hover:text-orange-500 transition-colors">{{ exp.job_title }}</h3>
-            <p class="text-slate-400 text-sm mb-4">{{ exp.company }}</p>
-            
-            <div class="flex items-center gap-2 text-[10px] mono text-slate-500 uppercase tracking-tighter">
-                <span class="text-orange-500/50">Read more</span>
-                <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-            </div>
+            <span class="mono text-[10px] text-orange-600 border border-orange-600/20 px-3 py-1">Rev 01.2026</span>
         </div>
-        {% endfor %}
+
+        <div class="grid md:grid-cols-4 gap-px bg-white/10 border border-white/10">
+            {% for skill in skills %}
+            <div class="bg-black p-10 hover:bg-zinc-900 transition-colors">
+                <span class="mono text-[10px] text-slate-600 block mb-6">Field Code: 0{{ forloop.counter }}</span>
+                <h4 class="text-xl font-semibold text-white mb-4">{{ skill.name }}</h4>
+                <div class="w-full bg-white/5 h-[1px]">
+                    <div class="bg-orange-600 h-full w-2/3"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 
-<!-- Experience Modal -->
-<div id="experienceModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-slate-950/90 backdrop-blur-md">
-    <div class="glass max-w-3xl w-full max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl relative">
-        <button onclick="closeExperienceModal()" class="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
+<section id="experience" class="py-32 px-12 bg-[#0a0a0a] border-b border-white/5">
+    <div class="max-w-7xl mx-auto">
+        <h3 class="text-3xl font-bold text-white mb-16">Career History</h3>
         
-        <div class="p-8 md:p-12">
-            <div class="mb-8">
-                <div class="flex items-center gap-4 mb-4">
-                    <span id="modalType" class="bg-orange-500/10 text-orange-500 text-[10px] mono font-bold px-3 py-1 rounded-full uppercase tracking-widest">Full-time</span>
-                    <span id="modalDates" class="text-slate-500 text-[10px] mono uppercase tracking-widest">Date Range</span>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for exp in experiences %}
+            <div class="bg-black border border-white/5 p-8 hover:border-orange-500/30 transition-all group flex flex-col">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-orange-500/10 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <span class="mono text-[10px] text-slate-600">{{ exp.start_date }} - {{ exp.end_date }}</span>
+                    </div>
+                    
+                    <h4 class="text-xl font-semibold text-white mb-2 group-hover:text-orange-500 transition-colors line-clamp-2">{{ exp.job_title }}</h4>
+                    <p class="text-sm mono text-slate-500 mb-4">{{ exp.company }}</p>
+                    
+                    {% if exp.location %}
+                    <div class="flex items-center gap-2 text-xs text-slate-600 mb-4">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span>{{ exp.location }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <p class="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-6">{{ exp.description }}</p>
                 </div>
-                <h2 id="modalTitle" class="text-4xl font-extrabold text-white mb-2 tracking-tight">Job Title</h2>
-                <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-slate-400">
-                    <span id="modalCompany" class="font-bold text-orange-500">Company Name</span>
-                    <span class="w-1 h-1 rounded-full bg-slate-700"></span>
-                    <span id="modalLocation" class="text-sm">Location</span>
+                
+                <button 
+                    onclick="openExperienceModal(this)"
+                    data-title="{{ exp.job_title }}"
+                    data-company="{{ exp.company }}"
+                    data-location="{{ exp.location }}"
+                    data-start="{{ exp.start_date }}"
+                    data-end="{{ exp.end_date }}"
+                    data-description="{{ exp.description }}"
+                    data-keyprojects="{{ exp.key_projects }}"
+                    data-skills="{{ exp.skills_used }}"
+                    class="w-full px-6 py-3 border border-white/10 text-xs mono text-white hover:bg-orange-500 hover:border-orange-500 transition-all flex items-center justify-center gap-2 group/btn"
+                >
+                    <span>View Details</span>
+                    <svg class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Experience Detail Modal -->
+<div id="experienceModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+    <div class="bg-[#0a0a0a] border border-white/10 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-[#0a0a0a] border-b border-white/10 p-8 flex justify-between items-start">
+            <div class="flex-1">
+                <h3 id="modalTitle" class="text-3xl font-bold text-white mb-2"></h3>
+                <p id="modalCompany" class="text-sm mono text-slate-500 mb-4"></p>
+                <div class="flex items-center gap-6 text-xs mono text-slate-600">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span id="modalDates"></span>
+                    </div>
+                    <div id="modalLocationWrapper" class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span id="modalLocation"></span>
+                    </div>
                 </div>
             </div>
+            <button onclick="closeExperienceModal()" class="text-slate-500 hover:text-white transition-colors ml-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="p-8 space-y-8">
+            <div>
+                <h4 class="text-sm mono text-slate-500 uppercase tracking-wider mb-4">Description</h4>
+                <p id="modalDescription" class="text-slate-400 leading-relaxed whitespace-pre-line"></p>
+            </div>
             
-            <div class="space-y-8 text-slate-400">
-                <div id="modalDescriptionSection">
-                    <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-4 border-b border-white/5 pb-2">Professional Brief</h3>
-                    <p id="modalDescription" class="leading-relaxed font-light italic">Description goes here...</p>
-                </div>
-                
-                <div id="modalProjectsSection">
-                    <div class="bg-white/5 p-8 rounded-xl border border-white/5">
-                        <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2 text-orange-500">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                            Key Project Portfolio
-                        </h4>
-                        <p id="modalProjects" class="text-sm leading-relaxed font-light">Project details...</p>
-                    </div>
-                </div>
-                
-                <div id="modalSkillsSection">
-                    <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-4">Technical Stack</h3>
-                    <div id="modalSkills" class="flex flex-wrap gap-2">
-                        <!-- Skills will be injected here -->
-                    </div>
-                </div>
+            <div id="keyProjectsSection">
+                <h4 class="text-sm mono text-slate-500 uppercase tracking-wider mb-4">Key Projects</h4>
+                <p id="modalKeyProjects" class="text-slate-400 leading-relaxed whitespace-pre-line"></p>
+            </div>
+            
+            <div id="skillsSection">
+                <h4 class="text-sm mono text-slate-500 uppercase tracking-wider mb-4">Skills & Technologies</h4>
+                <div id="modalSkills" class="flex flex-wrap gap-2"></div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-function openExperienceModal(el) {
+function openExperienceModal(element) {
     const modal = document.getElementById('experienceModal');
-    const data = el.dataset;
+    const title = element.dataset.title;
+    const company = element.dataset.company;
+    const location = element.dataset.location;
+    const start = element.dataset.start;
+    const end = element.dataset.end;
+    const description = element.dataset.description;
+    const keyProjects = element.dataset.keyprojects;
+    const skills = element.dataset.skills;
     
-    document.getElementById('modalTitle').innerText = data.title;
-    document.getElementById('modalCompany').innerText = data.company;
-    document.getElementById('modalType').innerText = data.type;
-    document.getElementById('modalDates').innerText = data.dates;
-    document.getElementById('modalLocation').innerText = data.location;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalCompany').textContent = company;
+    document.getElementById('modalDates').textContent = start + ' - ' + end;
+    document.getElementById('modalDescription').textContent = description || 'No description provided.';
     
-    // Description
-    const desc = document.getElementById('modalDescription');
-    if (data.description) {
-        desc.innerText = data.description;
-        document.getElementById('modalDescriptionSection').classList.remove('hidden');
+    if (location) {
+        document.getElementById('modalLocation').textContent = location;
+        document.getElementById('modalLocationWrapper').style.display = 'flex';
     } else {
-        document.getElementById('modalDescriptionSection').classList.add('hidden');
+        document.getElementById('modalLocationWrapper').style.display = 'none';
     }
     
-    // Projects
-    const projects = document.getElementById('modalProjects');
-    if (data.projects) {
-        projects.innerText = data.projects;
-        document.getElementById('modalProjectsSection').classList.remove('hidden');
+    // Handle Key Projects
+    const keyProjectsSection = document.getElementById('keyProjectsSection');
+    const modalKeyProjects = document.getElementById('modalKeyProjects');
+    if (keyProjects && keyProjects !== 'None') {
+        modalKeyProjects.textContent = keyProjects;
+        keyProjectsSection.style.display = 'block';
     } else {
-        document.getElementById('modalProjectsSection').classList.add('hidden');
+        keyProjectsSection.style.display = 'none';
     }
     
-    // Skills
-    const skillsContainer = document.getElementById('modalSkills');
-    skillsContainer.innerHTML = '';
-    if (data.skills) {
-        document.getElementById('modalSkillsSection').classList.remove('hidden');
-        data.skills.split(' ').forEach(skill => {
-            const span = document.createElement('span');
-            span.className = 'mono text-[10px] text-orange-500 bg-orange-500/5 border border-orange-500/20 px-3 py-1 rounded';
-            span.innerText = skill;
-            skillsContainer.appendChild(span);
+    // Handle Skills
+    const skillsSection = document.getElementById('skillsSection');
+    const modalSkills = document.getElementById('modalSkills');
+    if (skills && skills !== 'None') {
+        modalSkills.innerHTML = '';
+        const skillList = skills.split(',').map(s => s.trim()).filter(s => s);
+        skillList.forEach(skill => {
+            const badge = document.createElement('span');
+            badge.className = 'px-3 py-1 bg-orange-500/10 border border-orange-500/20 text-orange-500 text-xs mono';
+            badge.textContent = skill;
+            modalSkills.appendChild(badge);
         });
+        skillsSection.style.display = 'block';
     } else {
-        document.getElementById('modalSkillsSection').classList.add('hidden');
+        skillsSection.style.display = 'none';
     }
     
     modal.classList.remove('hidden');
-    modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
 }
 
 function closeExperienceModal() {
     const modal = document.getElementById('experienceModal');
     modal.classList.add('hidden');
-    modal.classList.remove('flex');
     document.body.style.overflow = 'auto';
 }
 
-// Close on background click
+// Close modal on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeExperienceModal();
+    }
+});
+
+// Close modal when clicking outside
 document.getElementById('experienceModal').addEventListener('click', function(e) {
-    if (e.target === this) closeExperienceModal();
+    if (e.target === this) {
+        closeExperienceModal();
+    }
 });
 </script>
 
-<section id="education" class="mb-32">
-    <div class="mb-12">
-        <h2 class="section-title text-3xl text-white mb-4">Academic Background</h2>
-        <div class="h-1 w-16 bg-blue-500"></div>
-    </div>
-    <div class="grid md:grid-cols-2 gap-8">
-        {% for edu in education %}
-        <div class="glass p-8 rounded-2xl relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                <svg class="w-24 h-24 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.827a1 1 0 00-.788 0L2.606 6 10 9.243 17.394 6l-7-3.173z"></path><path d="M17.394 8.5L10 11.743 2.606 8.5 2 8.76V12a2 2 0 002 2h12a2 2 0 002-2V8.76l-.606-.26z"></path><path d="M5 10.743V12a1 1 0 001 1h8a1 1 0 001-1v-1.257L10 13l-5-2.257z"></path></svg>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">{{ edu.degree }}</h3>
-            <p class="text-orange-500 font-medium mb-4">{{ edu.institution }}</p>
-            <div class="flex justify-between items-center mt-6 pt-6 border-t border-white/5">
-                <span class="mono text-xs text-slate-500 uppercase tracking-widest">{{ edu.year }}</span>
-                {% if edu.location %}
-                <span class="text-xs text-slate-400 italic">{{ edu.location }}</span>
-                {% endif %}
-            </div>
+<section id="projects" class="py-32 px-12 bg-black">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-20 text-center">
+            <h3 class="text-4xl font-bold text-white">Project Registry</h3>
+            <p class="mono text-[10px] text-slate-500 tracking-wider mt-4">Structural & Infrastructure Archive</p>
         </div>
-        {% endfor %}
+
+        <div class="grid md:grid-cols-2 gap-12">
+            {% for project in projects %}
+            <div class="group relative bg-[#111111] overflow-hidden border border-white/5">
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="{{ project.image.url }}" class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                </div>
+                
+                <div class="p-10 relative">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="mono text-[10px] text-orange-600 font-semibold">Report Ref: {{ forloop.counter }}</span>
+                        <span class="h-px w-20 bg-white/10"></span>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-6">{{ project.title }}</h4>
+                    <p class="text-slate-500 text-sm mb-8 line-clamp-2">{{ project.description }}</p>
+                    
+                    <a href="{% url 'project_detail' project.id %}" class="inline-flex items-center mono text-[10px] text-white hover:text-orange-600 transition-colors tracking-wide">
+                        Access Specification File <span class="ml-4">→</span>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 
-<section id="contact" class="mb-32">
-    <div class="grid lg:grid-cols-2 gap-20">
-        <div>
-            <h2 class="section-title text-4xl text-white mb-6">Let's Talk</h2>
-            <p class="text-slate-400 text-lg leading-relaxed mb-10">
-                Have a project in mind or want to discuss structural engineering solutions? I'm always open to new opportunities and technical discussions.
-            </p>
-            
-            <div class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Email Me</p>
-                        <p class="text-white font-medium">{{ profile.email }}</p>
-                    </div>
+<section id="education" class="py-32 px-12 bg-[#0a0a0a] border-b border-white/5">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-20">
+            <div>
+                <div class="mb-16">
+                    <h3 class="text-3xl font-bold text-white mb-4">Academic Background</h3>
+                    <div class="h-1 w-16 bg-blue-500"></div>
                 </div>
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                <div class="space-y-10">
+                    {% for edu in education %}
+                    <div class="bg-black border border-white/5 p-8 hover:border-blue-500/30 transition-all group">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h4 class="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors">{{ edu.degree }}</h4>
+                                <p class="text-sm mono text-slate-500 mt-2">{{ edu.institution }}</p>
+                            </div>
+                            <svg class="w-10 h-10 text-blue-500/20 group-hover:text-blue-500/40 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                            </svg>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs text-slate-600 mono">
+                            <span>{{ edu.start_date }} - {{ edu.end_date }}</span>
+                            {% if edu.location %}
+                            <span>•</span>
+                            <span>{{ edu.location }}</span>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Location</p>
-                        <p class="text-white font-medium">{{ profile.location }}</p>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
 
-            <div class="mt-12 flex gap-4">
-                {% if profile.linkedin %}
-                <a href="{{ profile.linkedin }}" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-slate-900 transition-all">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                </a>
-                {% endif %}
-                {% if profile.github %}
-                <a href="{{ profile.github }}" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-slate-900 transition-all">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                </a>
-                {% endif %}
+            <div>
+                <div class="mb-16">
+                    <h3 class="text-3xl font-bold text-white mb-4">Licenses & Certifications</h3>
+                    <div class="h-1 w-16 bg-green-500"></div>
+                </div>
+                <div class="space-y-6">
+                    {% for cert in certificates %}
+                    <div class="flex items-start gap-6 p-6 hover:bg-white/[0.02] border border-transparent hover:border-white/5 transition-all">
+                        <div class="w-12 h-12 bg-green-500/10 flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-semibold text-white mb-2">{{ cert.name }}</h4>
+                            <p class="text-sm text-slate-500 mb-3">{{ cert.issuing_organization }}</p>
+                            <div class="flex items-center gap-4 text-xs mono text-slate-600">
+                                <span>Issued: {{ cert.issue_date }}</span>
+                                {% if cert.expiry_date %}
+                                <span>•</span>
+                                <span>Expires: {{ cert.expiry_date }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-
-        <div class="glass p-10 rounded-2xl shadow-2xl">
-            <form method="POST" class="space-y-6">
-                {% csrf_token %}
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Full Name</label>
-                        {{ form.name }}
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Email Address</label>
-                        {{ form.email }}
-                    </div>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Subject</label>
-                    {{ form.subject }}
-                </div>
-                <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Message</label>
-                    {{ form.message }}
-                </div>
-                <button type="submit" class="w-full bg-orange-500 hover:bg-orange-400 text-slate-900 font-extrabold py-5 rounded-lg shadow-xl shadow-orange-500/20 transition-all uppercase tracking-widest text-sm">
-                    Send Transmission
-                </button>
-            </form>
         </div>
     </div>
 </section>

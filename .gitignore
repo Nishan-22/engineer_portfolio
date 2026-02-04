@@ -1,13 +1,40 @@
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
 
 # Virtual environment
 venv/
+env/
+ENV/
+.venv/
 
 # Django
 db.sqlite3
+db.sqlite3-journal
+*.log
+local_settings.py
 .env
+*.pot
+
+# Media and Static files (development)
+media/
+staticfiles/
+static_root/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # OS
-.DS_Store	
+.DS_Store
+Thumbs.db
+
+# Deployment
+*.rsa
+*.pem

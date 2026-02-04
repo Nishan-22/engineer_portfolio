@@ -3,158 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ profile.full_name|default:"Lead Engineer" }} | Portfolio</title>
+    <title>{{ profile.full_name }} | Civil & Structural Engineering</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --accent: #f97316;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(30, 41, 59, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        [data-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #f1f5f9;
-            --accent: #f97316;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --border-color: rgba(0, 0, 0, 0.1);
+            --bg: #0a0a0a;
+            --accent: #ff5e14; /* Safety Orange */
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            scroll-behavior: smooth;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: #d1d5db;
+            letter-spacing: -0.02em;
         }
 
-        .section-title {
-            position: relative;
-            display: inline-block;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: -0.025em;
-        }
-        
-        /* Subtle glow for accents */
-        .accent-glow {
-            box-shadow: 0 0 20px rgba(249, 115, 22, 0.1);
+        .mono { font-family: 'JetBrains Mono', 'Courier New', monospace; letter-spacing: 0.05em; }
+
+        /* Full-screen Dark Industrial Overlay */
+        .hero-bg {
+            background: linear-gradient(90deg, #0a0a0a 40%, rgba(10, 10, 10, 0.7) 100%), 
+                        url('https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
         }
 
-        /* Light mode specific adjustments */
-        [data-theme="light"] .text-white { color: #0f172a !important; }
-        [data-theme="light"] .text-slate-400 { color: #475569 !important; }
-        [data-theme="light"] .text-slate-500 { color: #64748b !important; }
-        [data-theme="light"] .bg-white\/5 { background-color: rgba(0, 0, 0, 0.05); }
-        [data-theme="light"] .border-white\/10 { border-color: rgba(0, 0, 0, 0.1); }
-        [data-theme="light"] .border-white\/5 { border-color: rgba(0, 0, 0, 0.05); }
-        [data-theme="light"] .bg-slate-950 { background-color: #f1f5f9; }
-        [data-theme="light"] .bg-slate-950\/90 { background-color: rgba(241, 245, 249, 0.9); }
+        h1, h2, h3 { 
+            color: #ffffff; 
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+        
+        /* Hard corners for all elements */
+        * { border-radius: 0 !important; }
+
+        .btn-industrial {
+            background-color: var(--accent);
+            color: white;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .btn-industrial:hover { background-color: #e54e00; transform: translateX(5px); }
     </style>
-    <script>
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('theme') === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-            document.documentElement.setAttribute('data-theme', 'light');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
-    </script>
 </head>
-<body class="selection:bg-orange-500/30">
-    <nav class="glass sticky top-0 z-50 border-b border-white/5">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-orange-500 flex items-center justify-center font-black text-slate-900 rounded-sm shadow-lg shadow-orange-500/20">
-                    {{ profile.full_name|slice:":1"|default:"E" }}
-                </div>
-                <h1 class="text-lg font-bold tracking-tight text-white uppercase">
-                    {{ profile.full_name|default:"Engineer" }}
-                </h1>
+<body class="min-h-screen">
+    <nav class="absolute top-0 w-full z-50 py-8 px-12 border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-bold text-white">{{ profile.full_name|slice:":1" }}NDIRO.</span>
+                <span class="w-2 h-2 bg-orange-600"></span>
             </div>
-            <div class="hidden md:flex items-center gap-8 text-[13px] font-medium uppercase tracking-wider">
-                <a href="/" class="text-slate-400 hover:text-white transition-colors">Home</a>
-                <a href="{% url 'project_list' %}" class="text-slate-400 hover:text-white transition-colors">Projects</a>
-                
-                <!-- Theme Toggle Button -->
-                <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/10 transition-colors text-slate-400 hover:text-white" aria-label="Toggle Theme">
-                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                </button>
-
-                <a href="#contact" class="bg-orange-500 text-slate-900 px-5 py-2 font-bold hover:bg-orange-400 transition-all rounded-sm shadow-lg shadow-orange-500/20">Contact</a>
+            <div class="hidden md:flex gap-10 mono text-[11px] font-medium text-white/70">
+                <a href="/" class="hover:text-white border-b-2 border-orange-600">Home</a>
+                <a href="{% url 'project_list' %}" class="hover:text-white">Portfolio</a>
+                <a href="{% url 'contact' %}" class="hover:text-white">Contact</a>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-6 py-16">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="mb-8 p-4 mono text-xs uppercase border {% if message.tags == 'success' %}border-green-500 text-green-500 bg-green-500/10{% else %}border-red-500 text-red-500 bg-red-500/10{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+    <main>
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="border-t border-slate-800 bg-slate-950 py-12 mt-20">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="col-span-2">
-                <p class="mono text-[10px] text-slate-500 uppercase mb-2">Technical_Copyright</p>
-                <p class="text-sm font-bold text-white">© 2026 {{ profile.full_name }} // STRUCTURAL PORTFOLIO</p>
-            </div>
-            <div class="border-l border-slate-800 pl-6">
-                <p class="mono text-[10px] text-slate-500 uppercase">System_Status</p>
-                <p class="text-sm text-green-500">Operational</p>
-            </div>
-            <div class="border-l border-slate-800 pl-6">
-                <p class="mono text-[10px] text-slate-500 uppercase">Drawing_No</p>
-                <p class="text-sm text-white font-bold italic">A-101-CVL</p>
-            </div>
+    <footer class="bg-black py-12 px-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between mono text-[10px] text-slate-500 uppercase tracking-widest">
+            <p>© 2026 Structural Analytics</p>
+            <p>Non-Disclosure Agreement Applies</p>
         </div>
     </footer>
-
-    <script>
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const darkIcon = document.getElementById('theme-toggle-dark-icon');
-        const lightIcon = document.getElementById('theme-toggle-light-icon');
-
-        function updateIcons() {
-            if (document.documentElement.getAttribute('data-theme') === 'light') {
-                darkIcon.classList.remove('hidden');
-                lightIcon.classList.add('hidden');
-            } else {
-                lightIcon.classList.remove('hidden');
-                darkIcon.classList.add('hidden');
-            }
-        }
-
-        updateIcons();
-
-        themeToggleBtn.addEventListener('click', function() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateIcons();
-        });
-    </script>
 </body>
 </html>
