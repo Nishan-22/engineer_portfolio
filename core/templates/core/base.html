@@ -59,7 +59,7 @@
     <nav class="absolute top-0 w-full z-50 py-8 px-12 border-b border-white/5">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <span class="text-2xl font-bold text-white">{{ profile.full_name|slice:":1" }}NDIRO.</span>
+                <span class="text-2xl font-bold text-white">{{ profile.full_name|default:"Portfolio" }}</span>
                 <span class="w-2 h-2 bg-orange-600"></span>
             </div>
             <div class="hidden md:flex gap-10 mono text-[11px] font-medium text-white/70">
