@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 
 class Post(models.Model):
@@ -9,7 +10,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=250, unique=True, blank=True, null=True)
     excerpt = models.CharField(max_length=400, blank=True)
     body = models.TextField()
-    featured_image = models.ImageField(upload_to='blog/', blank=True, null=True)
+    featured_image = models.ImageField(upload_to='blog/', storage=MediaCloudinaryStorage(), blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
     published_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

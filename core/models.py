@@ -1,10 +1,11 @@
 from django.db import models
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 
 class Profile(models.Model):
     full_name = models.CharField(max_length=100)
     title = models.CharField(max_length=150)  # Civil Engineer, Site Engineer etc.
-    photo = models.ImageField(upload_to='profile/')
+    photo = models.ImageField(upload_to='profile/', storage=MediaCloudinaryStorage())
     about = models.TextField()
     email = models.EmailField()
     phone = models.CharField(max_length=20)

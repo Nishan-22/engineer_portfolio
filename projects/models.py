@@ -1,5 +1,5 @@
 from django.db import models
-
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 
 class Category(models.Model):
@@ -19,7 +19,7 @@ class Project(models.Model):
 
     tools_used = models.CharField(max_length=200, blank=True)  # AutoCAD, ETABS
 
-    image = models.ImageField(upload_to='projects/')
+    image = models.ImageField(upload_to='projects/', storage=MediaCloudinaryStorage())
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 
     featured = models.BooleanField(default=False)
