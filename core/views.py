@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.mail import send_mail
 from django.conf import settings
 from django.http import JsonResponse
 from django_ratelimit.decorators import ratelimit
@@ -8,6 +7,7 @@ from .models import Profile, Skill, Experience, Education, Certificate
 from .forms import ContactForm
 from projects.models import Project
 import os
+import requests
 
 
 def home(request):
@@ -76,17 +76,34 @@ def contact(request):
             message = form.cleaned_data['message']
             
             full_message = f"Message from {name} ({email}):\n\n{message}"
-            
+
+            # Send via Resend email API instead of SMTP (more reliable on Render)
+            api_key = os.getenv("RESEND_API_KEY")
+            to_email = profile.email if profile else settings.DEFAULT_FROM_EMAIL
+            if not api_key or not to_email:
+                messages.error(request, "Email service is not configured. Please try again later.")
+                return redirect('contact')
+
             try:
-                send_mail(
-                    subject,
-                    full_message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [profile.email if profile else settings.DEFAULT_FROM_EMAIL],
-                    fail_silently=False,
+                response = requests.post(
+                    "https://api.resend.com/emails",
+                    headers={
+                        "Authorization": f"Bearer {api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    json={
+                        "from": settings.DEFAULT_FROM_EMAIL,
+                        "to": [to_email],
+                        "subject": subject or "Portfolio contact form",
+                        "text": full_message,
+                    },
+                    timeout=10,
                 )
-                messages.success(request, "Your message has been sent successfully!")
-            except Exception as e:
+                if response.status_code >= 200 and response.status_code < 300:
+                    messages.success(request, "Your message has been sent successfully!")
+                else:
+                    messages.error(request, "There was an error sending your message. Please try again later.")
+            except Exception:
                 messages.error(request, "There was an error sending your message. Please try again later.")
             
             return redirect('contact')
