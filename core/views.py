@@ -41,6 +41,28 @@ def storage_debug(request):
     })
 
 
+def image_debug(request):
+    """
+    Debug the actual stored values and storage class for the profile photo.
+    """
+    profile = Profile.objects.first()
+    if not profile or not profile.photo:
+        return JsonResponse({
+            "has_profile": bool(profile),
+            "has_photo": False,
+        })
+
+    storage = type(profile.photo.storage).__name__
+
+    return JsonResponse({
+        "has_profile": True,
+        "has_photo": True,
+        "photo_name": profile.photo.name,
+        "photo_url": profile.photo.url,
+        "storage_class": storage,
+    })
+
+
 @ratelimit(key='ip', rate='5/h', method='POST')
 def contact(request):
     profile = Profile.objects.first()
