@@ -1,41 +1,51 @@
 {% extends "core/base.html" %}
 {% block content %}
 
-<div class="mb-20 text-center">
-    <h2 class="text-6xl font-black mb-4 tracking-tighter italic">Structural_Ledger</h2>
-    <p class="mono text-[10px] text-slate-500 uppercase tracking-[0.4em]">// System_Database_Projects</p>
-</div>
-
-<div class="grid md:grid-cols-2 gap-12">
-    {% for project in projects %}
-    <div class="hairline-border bg-black group transition-all duration-500">
-        <div class="relative aspect-video overflow-hidden border-b border-white/10">
-            <img src="{{ project.image.url }}" class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000">
-            <div class="absolute top-4 left-4 bg-black/80 px-3 py-1 mono text-[9px] text-orange-500 border border-orange-600/30">
-                REF_{{ forloop.counter|stringformat:"02d" }}
-            </div>
-        </div>
-        
-        <div class="p-8">
-            <h3 class="text-xl font-bold mb-4 group-hover:text-orange-600 transition-colors uppercase tracking-tight">{{ project.title }}</h3>
-            
-            <div class="space-y-3 mb-8">
-                <div class="flex justify-between items-baseline border-b border-white/5 pb-1">
-                    <span class="mono text-[9px] text-slate-500 uppercase">Discipline</span>
-                    <span class="mono text-[10px] text-white">{{ project.category.name|default:"General Civil" }}</span>
-                </div>
-                <div class="flex justify-between items-baseline border-b border-white/5 pb-1">
-                    <span class="mono text-[9px] text-slate-500 uppercase">Current_Status</span>
-                    <span class="mono text-[10px] text-green-500 font-bold uppercase">Operational</span>
-                </div>
-            </div>
-
-            <a href="{% url 'project_detail' project.id %}" class="block w-full text-center border border-white/10 py-4 mono text-[10px] text-slate-400 hover:border-orange-600 hover:text-white transition-all uppercase tracking-widest">
-                Access_Technical_Files [→]
-            </a>
-        </div>
+<div class="container-page section-spacing">
+    <div class="reveal">
+        <div class="section-label">Portfolio</div>
+        <h1 class="font-heading text-5xl md:text-6xl text-white mb-12">Projects</h1>
     </div>
-    {% endfor %}
+
+    <div class="grid md:grid-cols-2 gap-10 lg:gap-12">
+        {% for project in projects %}
+        <article class="group reveal" style="transition-delay: {{ forloop.counter0|add:1 }}00ms">
+            <div class="aspect-[16/10] overflow-hidden rounded-2xl border border-white/5 relative mb-6">
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
+                    <a href="{% url 'project_detail' project.id %}" class="btn-primary py-3 px-6 text-xs">View Case Study</a>
+                </div>
+            </div>
+            <div class="px-2">
+                <p class="text-[var(--accent)] text-[10px] font-bold uppercase tracking-[0.2em] mb-3">{{ project.category.name|default:"General Engineering" }}</p>
+                <h2 class="font-heading text-2xl text-white mb-3 group-hover:text-[var(--accent)] transition-colors">
+                    <a href="{% url 'project_detail' project.id %}">{{ project.title }}</a>
+                </h2>
+                <p class="text-white/50 leading-relaxed line-clamp-2 mb-6">{{ project.description }}</p>
+                <a href="{% url 'project_detail' project.id %}" class="inline-flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors">
+                    Detailed View 
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
 </div>
+
+<script>
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+</script>
 
 {% endblock %}

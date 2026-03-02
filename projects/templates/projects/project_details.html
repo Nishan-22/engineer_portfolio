@@ -1,106 +1,101 @@
 {% extends "core/base.html" %}
 {% block content %}
 
-<div class="max-w-5xl mx-auto">
-    <nav class="mono text-[10px] text-slate-500 uppercase tracking-widest mb-8">
-        <a href="/" class="hover:text-orange-500">Root</a> / 
-        <a href="{% url 'project_list' %}" class="hover:text-orange-500">Projects</a> / 
-        <span class="text-slate-300">{{ project.title|truncatechars:20 }}</span>
+<div class="container-page py-16 md:py-24">
+    <nav class="text-[10px] font-bold text-white/30 mb-12 uppercase tracking-[0.2em] flex items-center gap-3 reveal" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--accent)] transition-colors">Home</a>
+        <span class="w-1 h-1 rounded-full bg-white/20"></span>
+        <a href="{% url 'project_list' %}" class="hover:text-[var(--accent)] transition-colors">Projects</a>
+        <span class="w-1 h-1 rounded-full bg-white/20"></span>
+        <span class="text-white/60">{{ project.title }}</span>
     </nav>
 
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-white/10 pb-12">
-        <div class="max-w-2xl">
-            <span class="mono text-xs text-orange-500 uppercase tracking-[0.3em] block mb-2">// Technical_Report_{{ project.id|stringformat:"03d" }}</span>
-            <h1 class="text-5xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-none">
+    <header class="mb-20 reveal">
+        <div class="section-label">Case Study</div>
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1]">
                 {{ project.title }}
             </h1>
+            <div class="flex items-center gap-4 bg-white/5 border border-white/10 px-6 py-3 rounded-full shrink-0">
+                <span class="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse"></span>
+                <p class="text-white/50 text-[10px] font-bold uppercase tracking-widest">{{ project.duration }}</p>
+            </div>
         </div>
-        <div class="text-right">
-            <p class="mono text-[10px] text-slate-500 uppercase">Issue_Date</p>
-            <p class="text-sm font-bold text-white">{{ project.date|date:"M Y"|default:"FEB 2026" }}</p>
-        </div>
-    </div>
+    </header>
 
-    <div class="grid lg:grid-cols-12 gap-12">
-        <div class="lg:col-span-8 space-y-12">
-            <div class="blueprint-border p-2 bg-slate-900/50 group">
-                <div class="relative overflow-hidden">
-                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out">
-                    <div class="absolute inset-0 pointer-events-none opacity-20 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
+        <div class="lg:col-span-8 space-y-16">
+            <div class="reveal">
+                <div class="aspect-video overflow-hidden rounded-3xl border border-white/5 shadow-2xl">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-full object-cover">
                 </div>
             </div>
 
-            <div class="space-y-8">
-                <div>
-                    <h3 class="mono text-xs text-orange-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <span class="w-8 h-px bg-orange-500"></span> 01_Executive_Summary
-                    </h3>
-                    <div class="text-slate-300 text-lg leading-relaxed font-light first-letter:text-4xl first-letter:font-bold first-letter:text-orange-500 first-letter:mr-2 first-letter:float-left">
-                        {{ project.description|linebreaks }}
-                    </div>
-                </div>
-
-                <div class="bg-slate-900/30 border border-white/5 rounded-sm overflow-hidden">
-                    <div class="bg-white/5 px-4 py-2 border-b border-white/10">
-                        <span class="mono text-[10px] text-white uppercase tracking-widest">Schedule_A: Engineering_Specs</span>
-                    </div>
-                    <table class="w-full text-left mono text-[11px] uppercase tracking-wider">
-                        <tr class="border-b border-white/5">
-                            <td class="p-4 text-slate-500 bg-white/[0.02] w-1/3">Structural_System</td>
-                            <td class="p-4 text-slate-200">Reinforced Concrete / Post-Tensioned Slabs</td>
-                        </tr>
-                        <tr class="border-b border-white/5">
-                            <td class="p-4 text-slate-500 bg-white/[0.02]">Material_Grade</td>
-                            <td class="p-4 text-slate-200">C40/50 Concrete // ASTM A615 Grade 60 Steel</td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 text-slate-500 bg-white/[0.02]">Analysis_Software</td>
-                            <td class="p-4 text-slate-200">ETABS / SAFE / SAP2000</td>
-                        </tr>
-                    </table>
+            <div class="glass-card p-10 md:p-12 reveal">
+                <h2 class="text-[10px] font-bold text-[var(--accent)] uppercase tracking-[0.2em] mb-8">Project Narrative</h2>
+                <div class="text-white/70 leading-relaxed text-lg space-y-6">
+                    {{ project.description|linebreaks }}
                 </div>
             </div>
         </div>
 
-        <div class="lg:col-span-4">
-            <div class="sticky top-28 space-y-6">
-                <div class="blueprint-border p-6 bg-slate-900/80">
-                    <h3 class="mono text-[10px] text-white bg-orange-500 px-2 py-1 inline-block mb-6 uppercase tracking-widest font-bold">Project_Metadata</h3>
-                    
-                    <div class="space-y-6 mono text-[11px] uppercase tracking-wider">
+        <aside class="lg:col-span-4">
+            <div class="sticky top-28 space-y-8">
+                <div class="glass-card p-8 md:p-10 reveal" style="transition-delay: 200ms">
+                    <h2 class="text-[10px] font-bold text-[var(--accent)] uppercase tracking-[0.2em] mb-8">Specifications</h2>
+                    <dl class="space-y-8">
                         <div>
-                            <span class="text-slate-500 block mb-1">Site_Coordinates</span>
-                            <span class="text-slate-100 block">{{ project.location }}</span>
+                            <dt class="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-2">Location</dt>
+                            <dd class="text-white font-medium text-lg">{{ project.location }}</dd>
                         </div>
-                        <div class="h-px bg-white/5 w-full"></div>
                         <div>
-                            <span class="text-slate-500 block mb-1">Current_Phase</span>
-                            <span class="text-green-500 font-bold flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                As-Built / Final
-                            </span>
+                            <dt class="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-2">My Role</dt>
+                            <dd class="text-white font-medium text-lg">{{ project.role }}</dd>
                         </div>
-                        <div class="h-px bg-white/5 w-full"></div>
+                        {% if project.category %}
                         <div>
-                            <span class="text-slate-500 block mb-1">Scope_of_Work</span>
-                            <ul class="text-slate-300 space-y-1 mt-2">
-                                <li>• Structural Analysis</li>
-                                <li>• Foundation Design</li>
-                                <li>• Seismic Retrofitting</li>
-                            </ul>
+                            <dt class="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-2">Sector</dt>
+                            <dd class="text-white font-medium text-lg">{{ project.category.name }}</dd>
                         </div>
-                    </div>
+                        {% endif %}
+                        {% if project.tools_used %}
+                        <div>
+                            <dt class="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-2">Technologies</dt>
+                            <dd class="flex flex-wrap gap-2 mt-4">
+                                {% for tool in project.tools_used.split %}
+                                <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-[10px] font-bold text-white/50 uppercase tracking-widest">{{ tool }}</span>
+                                {% endfor %}
+                            </dd>
+                        </div>
+                        {% endif %}
+                    </dl>
                 </div>
-                
-                <a href="{% url 'project_list' %}" class="group flex items-center justify-between p-4 border border-white/10 mono text-[10px] text-slate-500 hover:border-orange-500 hover:text-orange-500 transition-all uppercase">
-                    <span>[ Return_to_Index ]</span>
-                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                    </svg>
-                </a>
+
+                <div class="reveal" style="transition-delay: 300ms">
+                    <a href="{% url 'project_list' %}" class="btn-outline w-full py-5 flex items-center justify-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        Back to Portfolio
+                    </a>
+                </div>
             </div>
-        </div>
+        </aside>
     </div>
 </div>
+
+<script>
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+</script>
 
 {% endblock %}

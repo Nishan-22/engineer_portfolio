@@ -3,82 +3,381 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ profile.full_name }} | Civil & Structural Engineering</title>
+    <meta name="description" content="{{ profile.full_name|default:'Professional Engineer' }} — {{ profile.title|default:'Structural & Civil Engineering' }}. Portfolio, projects, blog, and contact.">
+    <title>{% block title %}{{ profile.full_name|default:"Portfolio" }} | {{ profile.title|default:"Structural & Civil Engineering" }}{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #0a0a0a;
-            --accent: #ff5e14; /* Safety Orange */
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #050505;
+            --bg-card: #0c0c0c;
+            --bg-card-hover: #121212;
+            --text: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --accent: #ff2d55;
+            --accent-hover: #e6294d;
+            --accent-glow: rgba(255, 45, 85, 0.15);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
         }
+
+        [data-theme="light"] {
+            --bg: #f8f9fa;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f3f5;
+            --text: #1a1a1a;
+            --text-muted: #6c757d;
+            --accent: #ff2d55;
+            --accent-hover: #e6294d;
+            --accent-glow: rgba(255, 45, 85, 0.1);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.12);
+        }
+
+        /* Light Theme Overrides for Visibility */
+        [data-theme="light"] .text-white { color: var(--text) !important; }
+        [data-theme="light"] .text-white\/80 { color: rgba(26, 26, 26, 0.8) !important; }
+        [data-theme="light"] .text-white\/70 { color: rgba(26, 26, 26, 0.7) !important; }
+        [data-theme="light"] .text-white\/60 { color: rgba(26, 26, 26, 0.6) !important; }
+        [data-theme="light"] .text-white\/50 { color: rgba(26, 26, 26, 0.5) !important; }
+        [data-theme="light"] .text-white\/40 { color: rgba(26, 26, 26, 0.4) !important; }
+        [data-theme="light"] .text-white\/30 { color: rgba(26, 26, 26, 0.3) !important; }
+        [data-theme="light"] .text-white\/20 { color: rgba(26, 26, 26, 0.2) !important; }
+        [data-theme="light"] .text-white\/10 { color: rgba(26, 26, 26, 0.1) !important; }
+        
+        [data-theme="light"] .bg-white\/5 { background-color: rgba(0, 0, 0, 0.03) !important; }
+        [data-theme="light"] .bg-white\/10 { background-color: rgba(0, 0, 0, 0.05) !important; }
+        [data-theme="light"] .bg-white\/\[0\.01\] { background-color: rgba(0, 0, 0, 0.01) !important; }
+        [data-theme="light"] .bg-white\/\[0\.02\] { background-color: rgba(0, 0, 0, 0.02) !important; }
+        
+        [data-theme="light"] .border-white\/5 { border-color: rgba(0, 0, 0, 0.05) !important; }
+        [data-theme="light"] .border-white\/10 { border-color: rgba(0, 0, 0, 0.1) !important; }
+
+        [data-theme="light"] .bg-black\/80 { background-color: rgba(255, 255, 255, 0.8) !important; }
+        [data-theme="light"] .bg-black\/90 { background-color: rgba(255, 255, 255, 0.9) !important; }
+        [data-theme="light"] .bg-black\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: var(--bg);
-            color: #d1d5db;
-            letter-spacing: -0.02em;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .mono { font-family: 'JetBrains Mono', 'Courier New', monospace; letter-spacing: 0.05em; }
+        .font-heading { font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+        .uppercase-tight { letter-spacing: 0.05em; }
 
-        /* Full-screen Dark Industrial Overlay */
-        .hero-bg {
-            background: linear-gradient(90deg, #0a0a0a 40%, rgba(10, 10, 10, 0.7) 100%), 
-                        url('https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover;
-            background-position: center;
-        }
-
-        h1, h2, h3 { 
-            color: #ffffff; 
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            line-height: 1.2;
-        }
-        
-        /* Hard corners for all elements */
-        * { border-radius: 0 !important; }
-
-        .btn-industrial {
-            background-color: var(--accent);
+        .btn-primary {
+            background: var(--accent);
             color: white;
-            padding: 1rem 2.5rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            letter-spacing: 0.02em;
-            display: inline-flex;
-            align-items: center;
-            transition: all 0.3s ease;
+            padding: 0.875rem 1.75rem;
+            font-weight: 700;
+            font-size: 0.8125rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+            box-shadow: 0 4px 14px 0 var(--accent-glow);
         }
-        .btn-industrial:hover { background-color: #e54e00; transform: translateX(5px); }
+        .btn-primary:hover { 
+            background: var(--accent-hover); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 var(--accent-glow);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 0.75rem 1.75rem;
+            font-weight: 700;
+            font-size: 0.8125rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+        }
+        .btn-outline:hover { 
+            background: var(--accent); 
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px 0 var(--accent-glow);
+        }
+
+        .accent-line { width: 48px; height: 4px; background: var(--accent); border-radius: 2px; }
+
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+        }
+        .glass-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        .section-label {
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+        .section-label::after {
+            content: "";
+            height: 1px;
+            width: 40px;
+            background: var(--accent);
+            opacity: 0.5;
+        }
+
+        /* Subtle Background Patterns */
+        .bg-grid {
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .bg-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 600px;
+            background: radial-gradient(circle at 50% 0%, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Spacing system */
+        .container-page { max-width: 80rem; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+        @media (min-width: 768px) { .container-page { padding-left: 3rem; padding-right: 3rem; } }
+        @media (min-width: 1024px) { .container-page { padding-left: 4rem; padding-right: 4rem; } }
+        .section-spacing { padding-top: 6rem; padding-bottom: 6rem; position: relative; }
+        @media (min-width: 768px) { .section-spacing { padding-top: 8rem; padding-bottom: 8rem; } }
+        .section-head-spacing { margin-bottom: 4rem; }
+
+        .nav-link {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .nav-link:hover { color: white; }
+        .nav-link.active { color: white; }
+        .nav-link.active::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+            transition: top 0.2s ease;
+            border-radius: 0 0 8px 8px;
+        }
+        .skip-link:focus { top: 0; outline: none; }
+
+        #scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: var(--bg-card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 40;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+        }
+        #scroll-top.visible { opacity: 1; visibility: visible; }
+        #scroll-top:hover { 
+            background: var(--accent); 
+            border-color: var(--accent);
+            color: white;
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 20px -5px var(--accent-glow);
+        }
     </style>
 </head>
-<body class="min-h-screen">
-    <nav class="absolute top-0 w-full z-50 py-8 px-12 border-b border-white/5">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl font-bold text-white">{{ profile.full_name|default:"Portfolio" }}</span>
-                <span class="w-2 h-2 bg-orange-600"></span>
-            </div>
-            <div class="hidden md:flex gap-10 mono text-[11px] font-medium text-white/70">
-                <a href="/" class="hover:text-white border-b-2 border-orange-600">Home</a>
-                <a href="{% url 'project_list' %}" class="hover:text-white">Portfolio</a>
-                <a href="{% url 'contact' %}" class="hover:text-white">Contact</a>
+<body class="min-h-screen bg-grid">
+    <div class="bg-glow"></div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="sticky top-0 z-50 bg-[var(--bg)]/80 backdrop-blur-xl border-b border-white/5">
+        <div class="container-page py-5 flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2.5">
+                <span class="text-xl font-heading text-[var(--text)] tracking-tight">{{ profile.full_name|default:"Portfolio" }}</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse"></span>
+            </a>
+            <nav class="hidden md:flex items-center gap-10">
+                <a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+                <a href="/#skills" class="nav-link">About</a>
+                <a href="{% url 'project_list' %}" class="nav-link {% if 'project' in request.resolver_match.url_name %}active{% endif %}">Projects</a>
+                <a href="{% url 'post_list' %}" class="nav-link {% if 'post' in request.resolver_match.url_name %}active{% endif %}">Blog</a>
+                
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="p-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors" aria-label="Toggle theme">
+                    <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+                    <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+
+                <a href="{% url 'contact' %}" class="btn-primary ml-4">Contact</a>
+            </nav>
+            <div class="flex items-center gap-4 md:hidden">
+                <a href="{% url 'contact' %}" class="btn-primary text-xs py-2 px-5">Contact</a>
+                <button type="button" id="mobile-menu-btn" class="p-2 text-[var(--text-muted)] hover:text-[var(--text)]" aria-label="Open menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
             </div>
         </div>
-    </nav>
+        <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 container-page py-6 space-y-5 bg-[var(--bg)]/95 backdrop-blur-xl">
+            <a href="{% url 'home' %}" class="block nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+            <a href="/#skills" class="block nav-link">About</a>
+            <a href="{% url 'project_list' %}" class="block nav-link {% if 'project' in request.resolver_match.url_name %}active{% endif %}">Projects</a>
+            <a href="{% url 'post_list' %}" class="block nav-link {% if 'post' in request.resolver_match.url_name %}active{% endif %}">Blog</a>
+        </div>
+    </header>
 
-    <main>
+
+    <main id="main-content">
+        {% if messages %}
+        <div class="container-page pt-8">
+            {% for message in messages %}
+            <div class="mb-4 p-4 rounded-lg font-semibold {% if message.tags == 'error' %}bg-red-950/50 text-red-300 border border-red-500/30{% else %}bg-white/5 text-white border border-[var(--accent)]/30{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-black py-12 px-12 border-t border-white/5">
-        <div class="max-w-7xl mx-auto flex justify-between mono text-[10px] text-slate-500 uppercase tracking-widest">
-            <p>© 2026 Structural Analytics</p>
-            <p>Non-Disclosure Agreement Applies</p>
+    <footer class="border-t border-white/5 mt-32 bg-white/[0.01]">
+        <div class="container-page py-20">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <a href="/" class="flex items-center gap-2.5 mb-6">
+                        <span class="text-xl font-heading text-white tracking-tight">{{ profile.full_name|default:"Portfolio" }}</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse"></span>
+                    </a>
+                    <p class="text-white/40 text-sm max-w-sm mb-8 leading-relaxed">
+                        Dedicated to engineering excellence and sustainable infrastructure. Let's build the future together.
+                    </p>
+                    <div class="flex gap-5">
+                        {% if profile.linkedin %}
+                        <a href="{{ profile.linkedin }}" class="text-white/30 hover:text-white transition-colors" aria-label="LinkedIn">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        {% endif %}
+                        {% if profile.github %}
+                        <a href="{{ profile.github }}" class="text-white/30 hover:text-white transition-colors" aria-label="GitHub">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="flex flex-col md:items-end gap-6">
+                    <a href="{% url 'contact' %}" class="btn-outline px-10">Start a Project</a>
+                    <p class="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">
+                        © {% now "Y" %} {{ profile.full_name|default:"Portfolio" }} — Built to Last.
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
+
+    <button id="scroll-top" type="button" aria-label="Scroll to top">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 11l7-7m0 0l7 7m-7-7v16"></path></svg>
+    </button>
+
+    <script>
+        (function() {
+            // Theme Toggle Logic
+            const themeToggle = document.getElementById('theme-toggle');
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            const htmlElement = document.documentElement;
+
+            // Check for saved theme preference or default to dark
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            htmlElement.setAttribute('data-theme', savedTheme);
+            updateIcons(savedTheme);
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = htmlElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    
+                    htmlElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateIcons(newTheme);
+                });
+            }
+
+            function updateIcons(theme) {
+                if (theme === 'light') {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            }
+
+            var btn = document.getElementById('scroll-top');
+            if (btn) {
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 400) btn.classList.add('visible');
+                    else btn.classList.remove('visible');
+                });
+                btn.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            var menuBtn = document.getElementById('mobile-menu-btn');
+            var mobileMenu = document.getElementById('mobile-menu');
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

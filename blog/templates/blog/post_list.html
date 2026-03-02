@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<div class="container-page section-spacing">
+    <div class="reveal">
+        <div class="section-label">Insights</div>
+        <h1 class="font-heading text-5xl md:text-6xl text-white mb-12">Blog & Articles</h1>
+    </div>
+
+    {% if posts %}
+    <div class="grid md:grid-cols-2 gap-10 lg:gap-12">
+        {% for post in posts %}
+        <article class="group reveal" style="transition-delay: {{ forloop.counter0|add:1 }}00ms">
+            {% if post.featured_image %}
+            <a href="{% url 'post_detail' post.slug %}" class="block aspect-[16/9] overflow-hidden rounded-2xl mb-6 border border-white/5">
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </a>
+            {% endif %}
+            <div class="px-2">
+                <p class="text-[var(--accent)] text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+                    {% if post.published_at %}{{ post.published_at|date:"F j, Y" }}{% else %}{{ post.created_at|date:"F j, Y" }}{% endif %}
+                </p>
+                <h2 class="font-heading text-2xl text-white mb-4 group-hover:text-[var(--accent)] transition-colors">
+                    <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+                </h2>
+                {% if post.excerpt %}<p class="text-white/50 leading-relaxed line-clamp-2 mb-6">{{ post.excerpt }}</p>{% endif %}
+                <a href="{% url 'post_detail' post.slug %}" class="text-white font-bold text-xs uppercase tracking-[0.2em] inline-flex items-center gap-2 group/link">
+                    Read Article 
+                    <span class="w-8 h-px bg-white/20 group-hover/link:w-12 group-hover/link:bg-[var(--accent)] transition-all"></span>
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="glass-card p-16 text-center reveal">
+        <p class="text-white/40 font-medium text-lg">New insights coming soon. Stay tuned!</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+</script>
+
+{% endblock %}

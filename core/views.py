@@ -10,6 +10,11 @@ from projects.models import Project
 
 def home(request):
     profile = Profile.objects.first()
+    try:
+        from blog.models import Post
+        latest_posts = Post.objects.filter(status='published')[:2]
+    except Exception:
+        latest_posts = []
 
     context = {
         'profile': profile,
@@ -18,6 +23,7 @@ def home(request):
         'projects': Project.objects.all(),
         'education': Education.objects.all(),
         'certificates': Certificate.objects.all(),
+        'latest_posts': latest_posts,
     }
 
     return render(request, 'core/home.html', context)
