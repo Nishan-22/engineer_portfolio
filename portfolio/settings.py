@@ -34,11 +34,15 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 railway_public_domain = os.getenv('RAILWAY_PUBLIC_DOMAIN')
 render_external_hostname = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+custom_domain = 'ersagarpoudel.com.np'
 
 if railway_public_domain:
     ALLOWED_HOSTS.append(railway_public_domain)
 if render_external_hostname:
     ALLOWED_HOSTS.append(render_external_hostname)
+if custom_domain:
+    ALLOWED_HOSTS.append(custom_domain)
+    ALLOWED_HOSTS.append(f"www.{custom_domain}")
 
 # CSRF Trusted Origins for Production
 CSRF_TRUSTED_ORIGINS = [f"https://{domain}" for domain in ALLOWED_HOSTS if domain != 'localhost' and domain != '127.0.0.1']
@@ -46,6 +50,9 @@ if railway_public_domain:
     CSRF_TRUSTED_ORIGINS.append(f"https://{railway_public_domain}")
 if render_external_hostname:
     CSRF_TRUSTED_ORIGINS.append(f"https://{render_external_hostname}")
+if custom_domain:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{custom_domain}")
+    CSRF_TRUSTED_ORIGINS.append(f"https://www.{custom_domain}")
 
 
 # Application definition
