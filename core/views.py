@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django.http import JsonResponse
 from django_ratelimit.decorators import ratelimit
 from .models import Profile, Skill, Experience, Education, Certificate
 from .forms import ContactForm
 from projects.models import Project
+import os
 
 
 def home(request):
@@ -27,6 +29,16 @@ def home(request):
     }
 
     return render(request, 'core/home.html', context)
+
+
+def storage_debug(request):
+    """
+    Lightweight debug endpoint to verify storage config on Render.
+    """
+    return JsonResponse({
+        "DEFAULT_FILE_STORAGE": settings.DEFAULT_FILE_STORAGE,
+        "CLOUDINARY_URL_present": bool(os.getenv("CLOUDINARY_URL")),
+    })
 
 
 @ratelimit(key='ip', rate='5/h', method='POST')
