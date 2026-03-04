@@ -20,7 +20,9 @@ def home(request):
 
     context = {
         'profile': profile,
-        'skills': Skill.objects.all(),
+        'technical_skills': Skill.objects.filter(category='technical'),
+        'field_skills': Skill.objects.filter(category='field'),
+        'software_skills': Skill.objects.filter(category='software'),
         'experiences': Experience.objects.all(),
         'projects': Project.objects.all(),
         'education': Education.objects.all(),

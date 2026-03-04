@@ -22,6 +22,7 @@ class Skill(models.Model):
     CATEGORY_CHOICES = (
         ('technical', 'Technical'),
         ('field', 'Field'),
+        ('software', 'Software'),
     )
 
     name = models.CharField(max_length=100)
