@@ -25,8 +25,9 @@
         {% if profile.photo %}
         <img src="{{ profile.photo.url }}" alt="{{ profile.full_name }}" class="absolute inset-0 w-full h-full object-cover object-center scale-110 animate-slow-zoom">
         <!-- Subtle gradient for depth -->
-        <div class="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-transparent to-transparent" aria-hidden="true"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-transparent to-transparent" aria-hidden="true"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-transparent to-transparent opacity-100 dark:opacity-100" aria-hidden="true"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-transparent to-transparent opacity-60 dark:opacity-100" aria-hidden="true"></div>
+        <div class="absolute inset-0 bg-black/5 dark:bg-transparent" aria-hidden="true"></div>
         {% else %}
         <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center">
             <div class="w-64 h-64 rounded-2xl border border-white/10 flex items-center justify-center rotate-3 bg-white/5 backdrop-blur-sm">

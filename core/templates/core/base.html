@@ -6,6 +6,22 @@
     <meta name="description" content="{{ profile.full_name|default:'Professional Engineer' }} — {{ profile.title|default:'Structural & Civil Engineering' }}. Portfolio, projects, blog, and contact.">
     <title>{% block title %}{{ profile.full_name|default:"Portfolio" }} | {{ profile.title|default:"Structural & Civil Engineering" }}{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['selector', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    animation: {
+                        'slow-zoom': 'slow-zoom 20s infinite alternate ease-in-out',
+                    },
+                    colors: {
+                        accent: 'var(--accent)',
+                        'accent-hover': 'var(--accent-hover)',
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -25,16 +41,16 @@
         }
 
         [data-theme="light"] {
-            --bg: #f8f9fa;
+            --bg: #fdfdfd;
             --bg-card: #ffffff;
-            --bg-card-hover: #f1f3f5;
+            --bg-card-hover: #f8f9fa;
             --text: #1a1a1a;
-            --text-muted: #6c757d;
+            --text-muted: #64748b;
             --accent: #ff2d55;
             --accent-hover: #e6294d;
-            --accent-glow: rgba(255, 45, 85, 0.1);
-            --border: rgba(0, 0, 0, 0.08);
-            --border-hover: rgba(0, 0, 0, 0.12);
+            --accent-glow: rgba(255, 45, 85, 0.12);
+            --border: rgba(0, 0, 0, 0.1);
+            --border-hover: rgba(0, 0, 0, 0.18);
         }
 
         /* Light Theme Overrides for Visibility */
@@ -44,21 +60,65 @@
         [data-theme="light"] .text-white\/60 { color: rgba(26, 26, 26, 0.6) !important; }
         [data-theme="light"] .text-white\/50 { color: rgba(26, 26, 26, 0.5) !important; }
         [data-theme="light"] .text-white\/40 { color: rgba(26, 26, 26, 0.4) !important; }
-        [data-theme="light"] .text-white\/30 { color: rgba(26, 26, 26, 0.3) !important; }
-        [data-theme="light"] .text-white\/20 { color: rgba(26, 26, 26, 0.2) !important; }
-        [data-theme="light"] .text-white\/10 { color: rgba(26, 26, 26, 0.1) !important; }
+        [data-theme="light"] .text-white\/30 { color: rgba(26, 26, 26, 0.45) !important; }
+        [data-theme="light"] .text-white\/20 { color: rgba(26, 26, 26, 0.35) !important; }
+        [data-theme="light"] .text-white\/10 { color: rgba(26, 26, 26, 0.2) !important; }
         
         [data-theme="light"] .bg-white\/5 { background-color: rgba(0, 0, 0, 0.03) !important; }
-        [data-theme="light"] .bg-white\/10 { background-color: rgba(0, 0, 0, 0.05) !important; }
-        [data-theme="light"] .bg-white\/\[0\.01\] { background-color: rgba(0, 0, 0, 0.01) !important; }
-        [data-theme="light"] .bg-white\/\[0\.02\] { background-color: rgba(0, 0, 0, 0.02) !important; }
+        [data-theme="light"] .bg-white\/10 { background-color: rgba(0, 0, 0, 0.06) !important; }
         
-        [data-theme="light"] .border-white\/5 { border-color: rgba(0, 0, 0, 0.05) !important; }
-        [data-theme="light"] .border-white\/10 { border-color: rgba(0, 0, 0, 0.1) !important; }
+        [data-theme="light"] .border-white\/5 { border-color: rgba(0, 0, 0, 0.08) !important; }
+        [data-theme="light"] .border-white\/10 { border-color: rgba(0, 0, 0, 0.12) !important; }
 
-        [data-theme="light"] .bg-black\/80 { background-color: rgba(255, 255, 255, 0.8) !important; }
-        [data-theme="light"] .bg-black\/90 { background-color: rgba(255, 255, 255, 0.9) !important; }
-        [data-theme="light"] .bg-black\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+        [data-theme="light"] .bg-black\/80 { background-color: rgba(255, 255, 255, 0.88) !important; }
+        [data-theme="light"] .bg-black\/90 { background-color: rgba(255, 255, 255, 0.94) !important; }
+        [data-theme="light"] .bg-black\/95 { background-color: rgba(255, 255, 255, 0.98) !important; }
+
+        [data-theme="light"] .prose-invert {
+            --tw-prose-body: #4b5563;
+            --tw-prose-headings: #111827;
+            --tw-prose-lead: #4b5563;
+            --tw-prose-links: #ff2d55;
+            --tw-prose-bold: #111827;
+            --tw-prose-counters: #6b7280;
+            --tw-prose-bullets: #d1d5db;
+            --tw-prose-hr: #f3f4f6;
+            --tw-prose-quotes: #111827;
+            --tw-prose-quote-borders: #e5e7eb;
+            --tw-prose-captions: #6b7280;
+            --tw-prose-code: #111827;
+            --tw-prose-pre-code: #e5e7eb;
+            --tw-prose-pre-bg: #1f2937;
+            --tw-prose-th-borders: #d1d5db;
+            --tw-prose-td-borders: #e5e7eb;
+        }
+
+        [data-theme="light"] .glass-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: #ffffff;
+        }
+        [data-theme="light"] .glass-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            background: #fdfdfd;
+        }
+
+        [data-theme="light"] .rounded-2xl.border-white\/5, 
+        [data-theme="light"] .rounded-3xl.border-white\/5 {
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+            border-color: rgba(0,0,0,0.06) !important;
+        }
+
+        [data-theme="light"] .bg-grid {
+            background-image: radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px);
+        }
+        [data-theme="light"] .glass-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        [data-theme="light"] .rounded-2xl.border-white\/5 {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
 
         html { scroll-behavior: smooth; }
 
